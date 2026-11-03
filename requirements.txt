@@ -1,0 +1,14 @@
+# Web user interface (microphone recorder, buttons, tables)
+streamlit>=1.50
+# Speech-to-text using the free Google Web Speech API
+SpeechRecognition>=3.10
+# Microphone access for the desktop (Tkinter) app
+PyAudio>=0.2.14
+# Uses the Windows certificate store so HTTPS works behind a corporate proxy
+truststore>=0.9
+# Reads/writes the Excel "database"
+pandas>=2.0
+# Needed by pandas for .xlsx files
+openpyxl>=3.1
+# Offline text-to-speech (Windows SAPI5 voices)
+pyttsx3>=2.90

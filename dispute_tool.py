@@ -19,6 +19,9 @@ SAMPLE_DISPUTES = [
 
 STATUSES = ["Under Review", "Pending Documents", "Resolved", "Closed"]
 
+# Shown before amounts in answers, e.g. "$2,500". Change to "₹", "£", "€" ... if needed.
+CURRENCY_SYMBOL = "$"
+
 # Spoken numbers sound more natural than digits ("five working days")
 NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
 
@@ -102,20 +105,27 @@ def days_to_words(days: int) -> str:
     return NUMBER_WORDS[days] if 0 <= days < len(NUMBER_WORDS) else str(days)
 
 
+def format_amount(amount) -> str:
+    """2500 -> '$2,500'; 2500.5 -> '$2,500.50'."""
+    amount = float(amount)
+    return f"{CURRENCY_SYMBOL}{amount:,.0f}" if amount.is_integer() else f"{CURRENCY_SYMBOL}{amount:,.2f}"
+
+
 def build_response(dispute: dict, intent: str = "check") -> str:
     """Turn a dispute record into a friendly sentence that matches the question type."""
     dispute_id = dispute["DisputeID"]
+    amount = format_amount(dispute["Amount"])
     status = str(dispute["Status"])
     days = int(dispute["ExpectedDays"])
     day_text = f"{days_to_words(days)} working day{'s' if days != 1 else ''}"
 
     # The opening line depends on what was asked; the details depend on the status
     if intent == "update":
-        opener, subject = f"Here is the latest update on dispute {dispute_id}. ", "It"
+        opener, subject = f"Here is the latest update on dispute {dispute_id} for {amount}. ", "It"
     elif intent == "status":
-        opener, subject = f"The status of dispute {dispute_id} is {status}. ", "It"
+        opener, subject = f"The status of dispute {dispute_id} for {amount} is {status}. ", "It"
     else:
-        opener, subject = "", f"Your dispute {dispute_id}"
+        opener, subject = "", f"Your dispute {dispute_id} for {amount}"
 
     if status == "Resolved":
         details = f"{subject} has been resolved."

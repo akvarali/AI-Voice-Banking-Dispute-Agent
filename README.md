@@ -20,7 +20,7 @@ Two front-ends share the same code and the same Excel file, so you can use eithe
  📝 Speech-to-text        ──►  Google Web Speech API (SpeechRecognition library)
  🔎 Find the dispute ID   ──►  Regex finds "D1001" in the text
  📊 Look it up            ──►  pandas reads data/disputes.xlsx
- 💬 Build the answer      ──►  e.g. "Your dispute D1001 is currently under review ..."
+ 💬 Build the answer      ──►  e.g. "Your dispute D1001 for $2,500 is currently under review ..."
  🔊 Speak the answer      ──►  pyttsx3 (offline Windows voices) → played in the browser
 ```
 
@@ -186,10 +186,10 @@ keywords decide how the answer starts (the "intent"):
 
 | You ask | Intent (keyword) | Answer starts with |
 |---|---|---|
-| "Check dispute D1001" | check (default) | "Your dispute D1001 is currently under review..." |
-| "Can you check dispute D1001?" | check (default) | "Your dispute D1001 is currently under review..." |
-| "What is the status of dispute D1001?" | status (`status`) | "The status of dispute D1001 is Under Review. It is expected..." |
-| "Tell me the latest update on D1001" | update (`latest`, `update`, `progress`, `news`) | "Here is the latest update on dispute D1001. It is currently..." |
+| "Check dispute D1001" | check (default) | "Your dispute D1001 for $2,500 is currently under review..." |
+| "Can you check dispute D1001?" | check (default) | "Your dispute D1001 for $2,500 is currently under review..." |
+| "What is the status of dispute D1001?" | status (`status`) | "The status of dispute D1001 for $2,500 is Under Review. It is expected..." |
+| "Tell me the latest update on D1001" | update (`latest`, `update`, `progress`, `news`) | "Here is the latest update on dispute D1001 for $2,500. It is currently..." |
 
 To add a new intent, add a line to `INTENT_PATTERNS` and an opener in `build_response()`
 in `dispute_tool.py`.
@@ -230,10 +230,10 @@ To start fresh, close the file in Excel, delete `data\disputes.xlsx` and restart
 
 | Status | Answer |
 |---|---|
-| Under Review | "Your dispute D1001 is currently under review and is expected to be resolved within five working days." |
-| Pending Documents | "Your dispute D1003 is pending documents. Please submit the required documents. Once received, it is expected to be resolved within three working days." |
-| Resolved | "Your dispute D1002 has been resolved." |
-| Closed | "Your dispute D1005 has been closed." |
+| Under Review | "Your dispute D1001 for $2,500 is currently under review and is expected to be resolved within five working days." |
+| Pending Documents | "Your dispute D1003 for $3,200 is pending documents. Please submit the required documents. Once received, it is expected to be resolved within three working days." |
+| Resolved | "Your dispute D1002 for $1,500 has been resolved." |
+| Closed | "Your dispute D1005 for $1,200 has been closed." |
 | Unknown ID | "Sorry, I could not find any dispute with ID D9999." |
 | No ID in the question | "Sorry, I could not find a dispute ID. You can ask, for example: ..." |
 
